@@ -1,0 +1,506 @@
+<!doctype html>
+<!--
+  Matchstone — page "Promoteurs immobiliers" (/cible/promoteurs-immobiliers)
+  Maquette statique autonome pour travail design.
+
+  • Tout le style est dans le <style> ci-dessous (variables de design en haut).
+  • Polices chargées depuis Google Fonts (Inter + Petrona).
+  • Aucune dépendance / build : ouvrir ce fichier directement dans un navigateur.
+  • Le texte est le contenu réel de la page.
+-->
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Promoteurs immobiliers — Matchstone</title>
+
+    <!-- Polices -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Petrona:ital,wght@0,400;0,500;0,600;1,400&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* ============================================================
+         DESIGN TOKENS — modifier ici pour changer toute la page
+         ============================================================ */
+      :root {
+        --primary: #f4d595;          /* or / accent doré */
+        --accent: #3784f4;           /* bleu */
+        --background: #0c102b;       /* fond navy */
+        --foreground: #ffffff;       /* texte principal */
+        --muted-foreground: rgba(255, 255, 255, 0.6); /* texte secondaire */
+        --card: rgba(255, 255, 255, 0.05);
+        --border: rgba(255, 255, 255, 0.2);
+        --radius: 5px;
+
+        --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+        --font-serif: "Petrona", Georgia, serif;
+
+        --content-width: 768px;      /* largeur de l'article */
+
+        /* Échelle de titres (mobile / desktop) */
+        --h1: 1.75rem;  --h1-lg: 2.5rem;
+        --h2: 1.375rem; --h2-lg: 1.75rem;
+        --h3: 1.125rem; --h3-lg: 1.25rem;
+      }
+
+      /* ============================================================
+         BASE
+         ============================================================ */
+      *, *::before, *::after { box-sizing: border-box; }
+      html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+      body {
+        margin: 0;
+        background: var(--background);
+        color: var(--foreground);
+        font-family: var(--font-sans);
+        font-size: 16px;
+        line-height: 1.5;
+      }
+      a { color: inherit; }
+
+      /* ============================================================
+         NAVBAR (élément partagé du site — simplifié ici)
+         ============================================================ */
+      .nav {
+        position: sticky; top: 0; z-index: 50;
+        background: rgba(12, 16, 43, 0.65);
+        backdrop-filter: blur(10px);
+      }
+      .nav__inner {
+        max-width: 1280px; margin: 0 auto; height: 64px;
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 0 1.5rem;
+      }
+      .nav__brand { font-family: var(--font-serif); font-weight: 600; color: var(--primary); font-size: 22px; }
+      .nav__links { display: none; gap: 2rem; }
+      .nav__links a { color: var(--muted-foreground); text-decoration: none; font-size: 14px; }
+      .nav__links a:hover { color: var(--foreground); }
+      .nav__cta {
+        border: 1px solid var(--foreground); color: var(--foreground); background: none;
+        border-radius: var(--radius); padding: 0.4rem 1rem;
+        font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; cursor: pointer;
+      }
+      .nav__rule { height: 1px; margin: 0 1.5rem; background: rgba(244, 213, 149, 0.4); }
+      @media (min-width: 1024px) { .nav__links { display: flex; } }
+
+      /* ============================================================
+         MISE EN PAGE
+         ============================================================ */
+      .page { padding: 5rem 1.5rem 6rem; }
+      .article { max-width: var(--content-width); margin: 0 auto; }
+      @media (min-width: 1024px) { .page { padding: 6rem 4rem 6rem; } }
+
+      /* ============================================================
+         TYPOGRAPHIE
+         ============================================================ */
+      h1, h2, h3 { font-family: var(--font-serif); font-weight: 600; }
+      h1 { color: var(--foreground); font-size: var(--h1); line-height: 1.2; margin: 0 0 2.5rem; }
+      h2 { color: var(--foreground); font-size: var(--h2); line-height: 1.25; margin: 4rem 0 1.5rem; }
+      h3 { color: var(--primary);   font-size: var(--h3); line-height: 1.3;  margin: 2rem 0 0.75rem; }
+      p  { color: var(--muted-foreground); line-height: 1.625; margin: 0 0 1rem; }
+      @media (min-width: 1024px) {
+        h1 { font-size: var(--h1-lg); }
+        h2 { font-size: var(--h2-lg); }
+        h3 { font-size: var(--h3-lg); }
+      }
+
+      /* Liste à puces */
+      .bullet-list {
+        list-style: disc; padding-left: 1.25rem; margin: 0;
+        display: flex; flex-direction: column; gap: 0.5rem;
+        color: var(--muted-foreground); line-height: 1.625;
+      }
+      .bullet-list li::marker { color: var(--primary); }
+
+      /* ============================================================
+         FAQ (accordéon)
+         ============================================================ */
+      .faq { border-top: 1px solid var(--border); }
+      .faq__item { border-bottom: 1px solid var(--border); }
+      .faq__q {
+        width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+        padding: 1.25rem 0; text-align: left; background: none; border: none; cursor: pointer;
+        font-family: var(--font-serif); font-weight: 600; color: var(--foreground); font-size: 1rem;
+        transition: color 0.15s;
+      }
+      .faq__q:hover { color: var(--primary); }
+      .faq__chev { flex-shrink: 0; transition: transform 0.2s; }
+      .faq__item.is-open .faq__chev { transform: rotate(180deg); }
+      .faq__a { display: none; flex-direction: column; gap: 0.75rem; padding-bottom: 1.5rem; }
+      .faq__item.is-open .faq__a { display: flex; }
+      .faq__a p { margin: 0; }
+      @media (min-width: 1024px) { .faq__q { font-size: 1.125rem; } }
+
+      /* ============================================================
+         CTA + formulaire newsletter
+         ============================================================ */
+      .cta { margin-top: 5rem; text-align: center; }
+      .cta__lead { color: var(--primary); font-weight: 600; font-size: 1.125rem; margin: 0 0 0.5rem; }
+      .cta__lead--gap { margin-bottom: 1.5rem; }
+      .cta__p { max-width: 42rem; margin: 0 auto 1rem; color: var(--muted-foreground); line-height: 1.625; }
+      .cta__p--last { margin-bottom: 2rem; }
+
+      .newsletter { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; width: 100%; max-width: 28rem; margin: 0 auto; }
+      .newsletter__row { display: flex; flex-direction: column; gap: 0.75rem; width: 100%; }
+      .newsletter input {
+        flex: 1; min-width: 0; border-radius: var(--radius); border: 1px solid var(--border);
+        background: var(--card); padding: 0.65rem 1rem; color: var(--foreground); font-size: 14px;
+      }
+      .newsletter input::placeholder { color: rgba(255, 255, 255, 0.45); }
+      .newsletter input:focus { outline: none; border-color: var(--primary); }
+      .newsletter button {
+        border: none; border-radius: var(--radius); background: var(--primary); color: #0c102b;
+        font-weight: 600; font-size: 14px; text-transform: uppercase; letter-spacing: 0.03em;
+        padding: 0.65rem 1.5rem; cursor: pointer; white-space: nowrap;
+        box-shadow: 0 4px 16px rgba(244, 213, 149, 0.4);
+      }
+      @media (min-width: 640px) { .newsletter__row { flex-direction: row; } }
+
+      /* ============================================================
+         FOOTER (élément partagé du site — simplifié ici)
+         ============================================================ */
+      .footer { border-top: 1px solid var(--border); margin-top: 5rem; padding: 2.5rem 1.5rem; }
+      .footer__inner { max-width: 1280px; margin: 0 auto; text-align: center; color: var(--muted-foreground); font-size: 13px; }
+    </style>
+  </head>
+
+  <body>
+    <!-- ===================== NAVBAR ===================== -->
+    <header class="nav">
+      <nav class="nav__inner">
+        <span class="nav__brand">Matchstone</span>
+        <div class="nav__links">
+          <a href="#">Vous êtes ?</a>
+          <a href="#">Blog</a>
+        </div>
+        <button class="nav__cta">Être notifié</button>
+      </nav>
+      <div class="nav__rule"></div>
+    </header>
+
+    <!-- ===================== PAGE ===================== -->
+    <main class="page">
+      <article class="article">
+        <h1>Promoteurs immobiliers : accédez aux bons fonciers avec Matchstone</h1>
+
+        <!-- L'essentiel -->
+        <h2>L’essentiel</h2>
+        <ul class="bullet-list">
+          <li>
+            Matchstone permet aux promoteurs immobiliers d’accéder à des fonciers et des opportunités
+            d’opérations qualifiées, sans passer par des circuits informels ni analyser des volumes de
+            dossiers non pertinents.
+          </li>
+          <li>
+            La technologie de matching Matchstone analyse les caractéristiques des opportunités déposées
+            ainsi que les critères de développement renseignés par les promoteurs. Lorsqu’une compatibilité
+            est identifiée, un match est généré.
+          </li>
+          <li>
+            L’environnement est sélectif : seuls les acteurs vérifiés accèdent aux opportunités. Cela limite
+            les phénomènes de surenchère non fondée.
+          </li>
+          <li>
+            En limitant l’accès aux professionnels vérifiés et en présentant les opportunités à des acteurs
+            dont les critères correspondent réellement au dossier, Matchstone contribue à réduire les
+            phénomènes de surenchère déconnectés de la réalité économique des opérations.
+          </li>
+          <li>
+            La data room intégrée permet d’analyser les dossiers et d’échanger de façon sécurisée avec les
+            cédants ou mandataires.
+          </li>
+        </ul>
+
+        <!-- Les défis -->
+        <h2>Les défis spécifiques des promoteurs immobiliers</h2>
+
+        <h3>Trouver les bons fonciers prend trop de temps</h3>
+        <p>
+          Les promoteurs immobiliers ou leurs développeurs fonciers consacrent une part importante de leur
+          activité à la recherche, au tri et à la qualification des opportunités foncières. Les sources
+          d’information sont multiples et hétérogènes, réseaux de notaires, agents immobiliers, propriétaires
+          directs, opérateurs fonciers, et les critères de sélection sont fins : surface, constructibilité,
+          PLU, délai de purge, charges foncières acceptables.
+        </p>
+        <p>
+          Cette recherche repose encore largement sur des réseaux informels, ce qui génère une asymétrie
+          d’accès : certains promoteurs sont systématiquement dans la boucle, d’autres passent à côté
+          d’opérations compatibles avec leur stratégie.
+        </p>
+
+        <h3>La surenchère comme phénomène structurel</h3>
+        <p>
+          Dans un marché où les opportunités circulent principalement par réseaux ou diffusion successive, il
+          n’est pas rare que des opérateurs aux profils, aux stratégies et aux capacités très différents se
+          retrouvent en concurrence sur les mêmes dossiers.
+        </p>
+        <p>
+          Cette situation peut favoriser des phénomènes de surenchère, certains acteurs se positionnant sur
+          des opérations qui ne correspondent pas réellement à leur modèle de développement ou à leur
+          stratégie d’investissement.
+        </p>
+        <p>
+          À l’inverse, des professionnels pourtant parfaitement adaptés à une opération peuvent ne jamais en
+          avoir connaissance.
+        </p>
+        <p>
+          La technologie de matching Matchstone vise à rééquilibrer cette situation en orientant chaque
+          opportunité vers les professionnels dont les critères de développement, la capacité d’intervention
+          et la stratégie correspondent aux caractéristiques du dossier.
+        </p>
+        <p>
+          L’objectif n’est pas de multiplier les candidatures, mais de favoriser une meilleure adéquation
+          entre les fonciers et les opérateurs susceptibles de les réaliser dans les meilleures conditions.
+        </p>
+
+        <h3>Des échanges documentaires non structurés</h3>
+        <p>
+          Lorsqu’un foncier intéressant est identifié, les échanges entre promoteur et cédant ou mandataire
+          impliquent rapidement des volumes documentaires importants — plans, diagnostics, documents
+          d’urbanisme, structures juridiques, éléments financiers.
+        </p>
+        <p>
+          La transmission de ces informations par email ou sur des solutions généralistes génère des pertes
+          de temps et des risques de version et une dispersion des données.
+        </p>
+
+        <!-- Ce que Matchstone apporte -->
+        <h2>Ce que Matchstone apporte aux promoteurs</h2>
+
+        <h3>Des opportunités orientées selon la stratégie de développement</h3>
+        <p>
+          À l’inscription, le promoteur renseigne ses critères de développement : localisation (commune,
+          secteur, EPCI), type d’opération (logement, tertiaire, mixte, réhabilitation), surface, budget
+          foncier. Ces paramètres constituent la matrice de matching.
+        </p>
+        <p>
+          Lorsqu’une opportunité est déposée sur la plateforme, la technologie de matching Matchstone analyse
+          ses caractéristiques et les compare aux critères renseignés par les promoteurs. Lorsqu’une
+          compatibilité est identifiée, un match est généré.
+        </p>
+        <p>Pas de veille manuelle, pas de tri préalable.</p>
+
+        <h3>Un accès à des propriétaires et mandataires qualifiés</h3>
+        <p>
+          Les vendeurs et mandataires présents sur Matchstone renseignent les informations nécessaires à la
+          qualification de leur profil et du dossier qu’ils souhaitent présenter. Cette qualification
+          préalable permet à la technologie de matching d’identifier les professionnels dont les critères de
+          développement correspondent aux caractéristiques de l’opération. Lorsqu’un match apparaît, les
+          échanges peuvent débuter dans un environnement sécurisé entre les parties.
+        </p>
+
+        <h3>Réduction de l’exposition aux surenchères non fondées</h3>
+        <p>
+          Parce que Matchstone repose sur un système de matching et un accès réservé aux professionnels
+          vérifiés, les opportunités sont présentées à des acteurs dont les critères de développement
+          correspondent aux caractéristiques du dossier. Cette approche favorise une meilleure adéquation
+          entre les fonciers et les opérateurs susceptibles de les réaliser, tout en contribuant à limiter les
+          phénomènes de surenchère déconnectés de la réalité économique des opérations.
+        </p>
+
+        <h3>Data room et échanges sécurisés</h3>
+        <p>
+          Lorsqu’un match apparaît, un espace d’échange sécurisé s’ouvre entre les parties. Le promoteur peut
+          alors échanger avec le vendeur ou son mandataire, poser ses premières questions et approfondir son
+          analyse de l’opération. L’ouverture de la data room n’est pas automatique. Le vendeur ou son
+          mandataire conserve la maîtrise des informations partagées et décide librement si, quand et à qui il
+          souhaite donner accès aux documents du dossier.
+        </p>
+
+        <!-- Cas d'usage -->
+        <h2>Cas d’usage</h2>
+
+        <h3>Acquisition d’un terrain ou d’un foncier pour opération de logement</h3>
+        <p>
+          Un promoteur immobilier renseigne ses critères de développement sur Matchstone : localisation,
+          potentiel constructible, typologie d’opération, budget foncier et calendrier de développement.
+          Lorsqu’un terrain ou une opportunité foncière correspondant à sa stratégie est déposé sur la
+          plateforme, la technologie de matching identifie cette compatibilité et génère un match. Le
+          promoteur peut alors échanger avec le vendeur ou son mandataire afin d’approfondir son analyse de
+          l’opération et obtenir les informations complémentaires nécessaires à sa prise de décision.
+        </p>
+
+        <h3>Acquisition d’actif à réhabiliter ou à transformer</h3>
+        <p>
+          Un promoteur travaillant sur des opérations de réhabilitation tertiaire en zone dense configure ses
+          critères sur Matchstone. Les actifs vacants ou sous-exploités déposés par des foncières ou des
+          propriétaires institutionnels correspondant à ses paramètres lui sont automatiquement signalés.
+        </p>
+
+        <h3>Acquisition d’un foncier pour une opération mixte</h3>
+        <p>
+          Un promoteur développe des programmes associant logements, commerces, bureaux ou services.
+          Lorsqu’une opportunité correspondant à sa stratégie de développement est déposée sur Matchstone, la
+          technologie de matching identifie cette compatibilité et génère un match. Le promoteur peut alors
+          échanger avec le vendeur ou son mandataire afin d’obtenir les informations complémentaires
+          nécessaires à son analyse.
+        </p>
+
+        <!-- FAQ -->
+        <h2>FAQ</h2>
+        <div class="faq">
+          <div class="faq__item">
+            <button class="faq__q">
+              <span>Comment configurer ses critères fonciers sur Matchstone ?</span>
+              <svg class="faq__chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+            <div class="faq__a">
+              <p>
+                Lors de son inscription, le promoteur complète son profil professionnel puis crée une ou
+                plusieurs fiches acquéreur correspondant à ses recherches. Pour chaque demande, il renseigne
+                ses critères de développement : localisation, type d’opération, budget foncier, potentiel
+                constructible, stratégie de développement et autres critères pertinents. Ces informations sont
+                utilisées par la technologie de matching Matchstone pour identifier les opportunités
+                compatibles avec chaque recherche.
+              </p>
+            </div>
+          </div>
+
+          <div class="faq__item">
+            <button class="faq__q">
+              <span>Matchstone permet-il de contacter directement les propriétaires ?</span>
+              <svg class="faq__chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+            <div class="faq__a">
+              <p>
+                Lorsqu’un match apparaît, un espace d’échange sécurisé s’ouvre entre les parties. Le promoteur
+                peut alors échanger avec le vendeur ou son mandataire afin d’approfondir son analyse de
+                l’opération.
+              </p>
+            </div>
+          </div>
+
+          <div class="faq__item">
+            <button class="faq__q">
+              <span>Les fonciers déposés sur Matchstone sont-ils exclusifs à la plateforme ?</span>
+              <svg class="faq__chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+            <div class="faq__a">
+              <p>
+                Non. Matchstone n’impose pas d’exclusivité sur les opportunités déposées. Selon les choix du
+                vendeur ou de son mandataire, une opération peut être présentée sur Matchstone tout en étant
+                commercialisée par d’autres canaux. La valeur ajoutée de Matchstone repose sur la qualification
+                des opportunités, le matching entre les professionnels et la structuration des échanges, et non
+                sur un principe d’exclusivité.
+              </p>
+            </div>
+          </div>
+
+          <div class="faq__item">
+            <button class="faq__q">
+              <span>Comment les opportunités foncières sont-elles sélectionnées sur Matchstone ?</span>
+              <svg class="faq__chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+            <div class="faq__a">
+              <p>
+                Les promoteurs renseignent leurs critères de développement lors de leur inscription :
+                localisation, typologie d’opération, potentiel constructible, budget foncier et autres critères
+                de recherche.
+              </p>
+              <p>
+                La technologie de matching Matchstone analyse ensuite les caractéristiques des opportunités
+                déposées afin d’identifier les professionnels dont les critères correspondent au dossier.
+              </p>
+            </div>
+          </div>
+
+          <div class="faq__item">
+            <button class="faq__q">
+              <span>Comment Matchstone limite-t-il les phénomènes de surenchère ?</span>
+              <svg class="faq__chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+            <div class="faq__a">
+              <p>
+                Les opportunités sont présentées à des professionnels vérifiés dont les critères de
+                développement correspondent aux caractéristiques du dossier.
+              </p>
+              <p>
+                Cette approche favorise une meilleure adéquation entre les opportunités et les opérateurs
+                susceptibles de les réaliser, tout en contribuant à limiter les phénomènes de surenchère
+                déconnectés de la réalité économique des opérations.
+              </p>
+            </div>
+          </div>
+
+          <div class="faq__item">
+            <button class="faq__q">
+              <span>Comment les informations sensibles sont-elles protégées ?</span>
+              <svg class="faq__chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+            <div class="faq__a">
+              <p>
+                L’adresse, les plans et certains documents stratégiques peuvent être masqués lors de la mise en
+                ligne d’une opportunité. L’ouverture de la data room reste sous le contrôle du vendeur ou de son
+                mandataire, qui décide librement si, quand et à qui il souhaite donner accès aux documents du
+                dossier.
+              </p>
+            </div>
+          </div>
+
+          <div class="faq__item">
+            <button class="faq__q">
+              <span>Matchstone couvre-t-il tous les types d’opérations de promotion ?</span>
+              <svg class="faq__chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+            <div class="faq__a">
+              <p>
+                Oui. Matchstone permet de qualifier des opportunités foncières et immobilières destinées à
+                différents types de projets : logement, tertiaire, opérations mixtes, réhabilitation,
+                restructuration ou changement d’usage.
+              </p>
+            </div>
+          </div>
+
+          <div class="faq__item">
+            <button class="faq__q">
+              <span>Matchstone est-il accessible à tous les promoteurs ?</span>
+              <svg class="faq__chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+            <div class="faq__a">
+              <p>Oui. Matchstone est accessible aux promoteurs immobiliers dont le profil professionnel a été vérifié.</p>
+              <p>La plateforme est conçue pour s’adapter à des stratégies de développement et à des tailles de structures variées.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- CTA -->
+        <section class="cta">
+          <h2>Accéder aux opportunités foncières qualifiées</h2>
+          <p class="cta__lead">Vous êtes promoteur immobilier ?</p>
+          <p class="cta__lead cta__lead--gap">Vous ne triez plus. Vous décidez.</p>
+          <p class="cta__p">
+            Rejoignez Matchstone et identifiez des fonciers compatibles avec votre stratégie de développement
+            tout en bénéficiant d’un environnement sécurisé, structuré et réservé aux professionnels vérifiés.
+          </p>
+          <p class="cta__p cta__p--last">
+            Déposez votre demande d’accès et intégrez le réseau Matchstone dès le lancement de la plateforme.
+          </p>
+          <form class="newsletter" onsubmit="return false;">
+            <div class="newsletter__row">
+              <input type="email" placeholder="Votre adresse e-mail" aria-label="Adresse e-mail" />
+              <button type="submit">Me notifier au lancement</button>
+            </div>
+          </form>
+        </section>
+      </article>
+    </main>
+
+    <!-- ===================== FOOTER ===================== -->
+    <footer class="footer">
+      <div class="footer__inner">© 2026 Matchstone. Tous droits réservés.</div>
+    </footer>
+
+    <!-- Accordéon FAQ -->
+    <script>
+      document.querySelectorAll(".faq__q").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          btn.closest(".faq__item").classList.toggle("is-open");
+        });
+      });
+    </script>
+  </body>
+</html>
